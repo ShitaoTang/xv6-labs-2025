@@ -23,6 +23,8 @@ int closest_sep(const char *str)
 
 int num(const char *str, int left, int right)
 {
+    if (left > right) return -1;
+    
     int res = 0;
     while (left < right) {
         res = res*10 + str[left]-'0';
@@ -62,19 +64,18 @@ int main(int argc, char *argv[])
     if (!nbytes) exit(0);
     buf[nbytes] = '\0';
 
-    int left = closest_sep(buf), right = 0, number;
-    if (left != 0) {
-        number = num(buf, 0, left-1);
-        if (number%5==0 || number%6==0) printf("%d\n", number);
-    }
+    int left = -1, right = 0, number;
 
-    while ((left = closest_sep(buf)) != -1) {
-        buf[left] = 'x';
-        if ((right = closest_sep(buf)) == -1)
-            right = nbytes;
+    while ((right = closest_sep(buf)) != -1) {
+        buf[right] = 'x';
         number = num(buf, left+1, right-1);
         if (number%5==0 || number%6==0) printf("%d\n", number);
+        left = right;
     }
+
+    if (right == -1) right = nbytes;
+    number = num(buf, left+1, right-1);
+    if (number%5==0 || number%6==0) printf("%d\n", number);
 
     exit(0);
 }
