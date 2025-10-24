@@ -60,6 +60,42 @@ main(int argc, char *argv[])
 void
 memdump(char *fmt, char *data)
 {
-  // Your code here.
-
+    while (*fmt) {
+        switch (*fmt) {
+        case 'i':
+            int inum = 0;
+            for (int i=0, factor=1; i<4; i++, data++, factor*=16*16)
+                inum += *data * factor;
+            printf("%d\n", inum);
+            break;
+        case 'p':
+            long lnum = 0;
+            for (int i=0, factor=1; i<8; i++, data++, factor*=16*16)
+                lnum += *data * factor;
+            printf("%lx\n", lnum);
+            break;
+        case 'h':
+            short snum = 0;
+            for (int i=0, factor=1; i<2; i++, data++, factor*=16*16)
+                snum += *data * factor;
+            printf("%d\n", snum);
+            break;
+        case 'c':
+            printf("%c\n", *data++);
+            break;
+        case 's':
+            char *str = 0;
+            for (int i=0, factor=1; i<8; i++, data++, factor*=16*16)
+                str += *data * factor;
+            printf("%s\n", str);
+            break;
+        case 'S':
+            printf("%s\n", data);
+            break;
+        default:
+            fprintf(2, "Invalid type '%c', must be one of: [iphcsS]", *fmt);
+            exit(1);
+        }
+        fmt++;
+    }
 }
