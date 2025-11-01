@@ -26,4 +26,6 @@ barrier
 *.dSYM
 *.pcap
 TAGS
-
+.vscode/
+*.bk
+.gdbinit.tmpl-riscv
